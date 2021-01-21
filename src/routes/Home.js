@@ -1,6 +1,8 @@
 import { memo } from 'react';
 import { gql, useQuery } from '@apollo/client';
 
+import Movie from '../components/Movie';
+
 const GET_MOVIES = gql`
   {
     movies {
@@ -13,23 +15,12 @@ const GET_MOVIES = gql`
 const Home = () => {
   const { loading, data } = useQuery(GET_MOVIES);
 
-  console.log(loading, data);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (data?.movies) {
-    return (
-      <div>
-        {data.movies.map((movie) => (
-          <h1 key={movie.id}>{movie.id}</h1>
-        ))}
-      </div>
-    );
-  }
-
-  return <div>Home</div>;
+  return (
+    <>
+      {loading && <div>Loading...</div>}
+      {!loading && data?.movies?.map((movie) => <Movie key={movie.id} id={movie.id} />)}
+    </>
+  );
 };
 
 export default memo(Home);
