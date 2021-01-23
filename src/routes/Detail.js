@@ -47,12 +47,18 @@ const Poster = styled.div`
 const GET_MOVIE = gql`
   query getMovie($id: Int!) {
     movie(id: $id) {
+      id
       title
       rating
       description_intro
       language
       medium_cover_image
       genres
+      isLiked @client
+    }
+    suggestions(id: $id) {
+      id
+      medium_cover_image
     }
   }
 `;
@@ -66,9 +72,13 @@ const Detail = () => {
   return (
     <Container>
       <Column>
-        <Title>{loading ? 'Loading...' : `${data.movie.title} `}</Title>
+        <Title>
+          {loading
+            ? 'Loading...'
+            : `${data.movie.title} (${data.movie.isLiked ? 'Liked' : 'Unliked'})`}
+        </Title>
         <SubTitle>
-          {data?.movie?.language} / {data?.movie?.rating}
+          {data?.movie?.language.toUpperCase()} {data?.movie?.rating}
         </SubTitle>
         <Description>{data?.movie?.description_intro}</Description>
       </Column>
