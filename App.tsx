@@ -1,27 +1,20 @@
 import { memo } from 'react';
-import { Text } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from '@emotion/react';
-import styled from '@emotion/native';
 
 import theme from './src/theme';
-
-const Container = styled.View({
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: '#fff',
-});
+import RootStack from './src/navigations';
 
 const App = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <Container>
+    <NavigationContainer>
+      <ThemeProvider theme={theme}>
         <StatusBar style="auto" />
 
-        <Text>Open up App.tsx to start working on your app!</Text>
-      </Container>
-    </ThemeProvider>
+        <RootStack />
+      </ThemeProvider>
+    </NavigationContainer>
   );
 };
 
