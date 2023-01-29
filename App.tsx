@@ -1,23 +1,27 @@
 import { memo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { ThemeProvider } from '@emotion/react';
+import styled from '@emotion/native';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+import theme from './src/theme';
+
+const Container = styled.View({
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: '#fff',
 });
 
 const App = () => {
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
+    <ThemeProvider theme={theme}>
+      <Container>
+        <StatusBar style="auto" />
 
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
+        <Text>Open up App.tsx to start working on your app!</Text>
+      </Container>
+    </ThemeProvider>
   );
 };
 
