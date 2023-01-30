@@ -14,22 +14,21 @@ const Title = styled.Text({
 const InputContainer = styled.View({
   flexDirection: 'row',
   alignItems: 'center',
-  paddingHorizontal: 10,
   borderBottomWidth: 1,
-  marginTop: 4,
+  marginHorizontal: 10,
 });
 
 const StyledTextInput = styled.TextInput({
   flex: 1,
   height: 40,
-  paddingLeft: 10,
+  paddingHorizontal: 10,
 });
 
 interface IInput extends TextInputProps {
   inputRef?: Ref<TextInput>;
   title: string;
   icon: 'email' | 'lock';
-  value: string;
+  value?: string;
 }
 
 const Input: FC<IInput> = ({ inputRef, title, icon, value, ...props }) => {

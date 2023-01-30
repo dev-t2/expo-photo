@@ -21,12 +21,11 @@ const SignInScreen: FC<SignInScreenProps> = ({ navigation }) => {
       <Text>SignIn</Text>
 
       <Input
-        title="Email"
+        title="EMAIL"
         icon="email"
         placeholder="Please enter your email"
         keyboardType="email-address"
         returnKeyType="next"
-        value=""
       />
 
       <Button title="SignUp" onPress={onSignUp} />
