@@ -3,6 +3,7 @@ import { Button, Text } from 'react-native';
 import styled from '@emotion/native';
 
 import { SignInScreenProps } from '../navigations/AuthStack';
+import { Input } from '../components';
 
 const Container = styled.View({
   flex: 1,
@@ -18,6 +19,15 @@ const SignInScreen: FC<SignInScreenProps> = ({ navigation }) => {
   return (
     <Container>
       <Text>SignIn</Text>
+
+      <Input
+        title="Email"
+        icon="email"
+        placeholder="Please enter your email"
+        keyboardType="email-address"
+        returnKeyType="next"
+        value=""
+      />
 
       <Button title="SignUp" onPress={onSignUp} />
     </Container>
