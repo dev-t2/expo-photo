@@ -20,13 +20,9 @@ const SignInScreen: FC<SignInScreenProps> = ({ navigation }) => {
     <Container>
       <Text>SignIn</Text>
 
-      <Input
-        title="EMAIL"
-        icon="email"
-        placeholder="Please enter your email"
-        keyboardType="email-address"
-        returnKeyType="next"
-      />
+      <Input types="email" returnKeyType="next" value="" />
+
+      <Input types="password" returnKeyType="done" value="" />
 
       <Button title="SignUp" onPress={onSignUp} />
     </Container>
