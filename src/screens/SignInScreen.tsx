@@ -1,4 +1,4 @@
-import { FC, memo, useCallback } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 import { Button, Text } from 'react-native';
 import styled from '@emotion/native';
 
@@ -12,6 +12,17 @@ const Container = styled.View({
 });
 
 const SignInScreen: FC<SignInScreenProps> = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onChangeEmail = useCallback((email: string) => {
+    setEmail(email.trim());
+  }, []);
+
+  const onChangePassword = useCallback((password: string) => {
+    setPassword(password.trim());
+  }, []);
+
   const onSignUp = useCallback(() => {
     navigation.navigate('SignUp');
   }, [navigation]);
@@ -20,9 +31,14 @@ const SignInScreen: FC<SignInScreenProps> = ({ navigation }) => {
     <Container>
       <Text>SignIn</Text>
 
-      <Input types="email" returnKeyType="next" value="" />
+      <Input types="email" returnKeyType="next" value={email} onChangeText={onChangeEmail} />
 
-      <Input types="password" returnKeyType="done" value="" />
+      <Input
+        types="password"
+        returnKeyType="done"
+        value={password}
+        onChangeText={onChangePassword}
+      />
 
       <Button title="SignUp" onPress={onSignUp} />
     </Container>

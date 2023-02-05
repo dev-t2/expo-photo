@@ -1,5 +1,5 @@
 import { FC, memo, Ref, useCallback, useMemo, useState } from 'react';
-import { KeyboardTypeOptions, ReturnKeyTypeOptions, TextInput, TextInputProps } from 'react-native';
+import { TextInput, TextInputProps } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/native';
@@ -8,41 +8,54 @@ const Container = styled.View({
   width: '100%',
 });
 
-const Title = styled.Text({
-  fontWeight: '700',
-});
+interface ITitle {
+  isActive: boolean;
+}
 
-const InputContainer = styled.View({
+const Title = styled.Text<ITitle>(({ theme, isActive }) => ({
+  fontWeight: '700',
+  color: isActive ? theme.colors.orange[500] : theme.colors.gray[500],
+}));
+
+interface IInputContainer {
+  isActive: boolean;
+}
+
+const InputContainer = styled.View<IInputContainer>(({ theme, isActive }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   borderBottomWidth: 1,
+  borderBottomColor: isActive ? theme.colors.orange[500] : theme.colors.gray[500],
   marginHorizontal: 10,
-});
+}));
 
-const StyledTextInput = styled.TextInput({
+interface IStyledTextInput {
+  isActive: boolean;
+}
+
+const StyledTextInput = styled.TextInput<IStyledTextInput>(({ theme, isActive }) => ({
   flex: 1,
   height: 40,
+  color: isActive ? theme.colors.orange[500] : theme.colors.gray[500],
   paddingHorizontal: 10,
-});
+}));
 
 interface IInput extends TextInputProps {
   inputRef?: Ref<TextInput>;
   types: 'email' | 'password';
-  returnKeyType?: ReturnKeyTypeOptions;
   value?: string;
 }
 
-const Input: FC<IInput> = ({ inputRef, types, returnKeyType = 'done', value, ...props }) => {
+const Input: FC<IInput> = ({ inputRef, types, value, ...props }) => {
   const theme = useTheme();
 
   const [isFocused, setIsFocused] = useState(false);
 
-  const { title, placeholder, keyboardType, secureTextEntry } = useMemo(() => {
+  const { title, placeholder, secureTextEntry } = useMemo(() => {
     if (types === 'email') {
       return {
         title: 'EMAIL',
         placeholder: 'Please enter your email',
-        keyboardType: 'email-address' as KeyboardTypeOptions,
         secureTextEntry: false,
       };
     }
@@ -51,7 +64,6 @@ const Input: FC<IInput> = ({ inputRef, types, returnKeyType = 'done', value, ...
       return {
         title: 'PASSWORD',
         placeholder: 'Please enter your password',
-        keyboardType: 'default' as KeyboardTypeOptions,
         secureTextEntry: true,
       };
     }
@@ -69,6 +81,16 @@ const Input: FC<IInput> = ({ inputRef, types, returnKeyType = 'done', value, ...
     }
   }, [types, isFocused]);
 
+  const keyboardType = useMemo(() => {
+    return types === 'email' ? 'email-address' : 'default';
+  }, [types]);
+
+  const isActive = useMemo(() => isFocused || !!value, [isFocused, value]);
+
+  const IconColor = useMemo(() => {
+    return isActive ? theme.colors.orange[500] : theme.colors.gray[500];
+  }, [isActive, theme.colors]);
+
   const onFocus = useCallback(() => {
     setIsFocused(true);
   }, []);
@@ -79,10 +101,10 @@ const Input: FC<IInput> = ({ inputRef, types, returnKeyType = 'done', value, ...
 
   return (
     <Container>
-      <Title>{title}</Title>
+      <Title isActive={isActive}>{title}</Title>
 
-      <InputContainer>
-        <MaterialCommunityIcons name={icon} size={24} color={theme.colors.black} />
+      <InputContainer isActive={isActive}>
+        <MaterialCommunityIcons name={icon} size={24} color={IconColor} />
 
         <StyledTextInput
           {...props}
@@ -93,7 +115,7 @@ const Input: FC<IInput> = ({ inputRef, types, returnKeyType = 'done', value, ...
           placeholder={placeholder}
           keyboardType={keyboardType}
           secureTextEntry={secureTextEntry}
-          returnKeyType={returnKeyType}
+          isActive={isActive}
           value={value}
           onFocus={onFocus}
           onBlur={onBlur}
